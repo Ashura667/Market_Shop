@@ -29,11 +29,12 @@ contract SaleProduct
     function getinfoproduct(address addresse) public view returns (Vendeur memory) {
         return Vendeurs[addresse];
     }
-    function acheterproduit(address addresse) public payable 
+    function acheterproduit(address payable addresse) public payable 
     {
-        require(msg.value >= Vendeurs[addresse].prix, "montant insuffisant");
+        require(msg.value == Vendeurs[addresse].prix, "montant incorrect");
         require(Vendeurs[addresse].quantite >0, "quantite insuffisante");
         Vendeurs[addresse].quantite--;
+        addresse.transfer(msg.value);
         acheteurs[msg.sender].produitacheter.push(Vendeurs[addresse].nom_produit);
 
 
